@@ -1,0 +1,372 @@
+/* ==========================================================================
+   site_map / style_simple.css — Максимально простий стиль списку (без тем, мінімалізм)
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #111827;
+  background: #ffffff;
+  padding: 16px 20px 40px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Верхня панель */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.top-bar h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.search-input {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  min-width: 240px;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* ── ДЕРЕВО СПИСКУ ───────────────────────────────────────────────────────── */
+.tree-node {
+  margin: 4px 0;
+}
+
+/* Рядок категорії */
+.node-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  user-select: none;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.node-row:hover {
+  background: #f1f5f9;
+}
+.node-row.no-prods {
+  cursor: default;
+}
+.node-row.no-prods:hover {
+  background: inherit;
+}
+
+.tree-node.lvl-1 > .node-row {
+  font-size: 15px;
+  font-weight: 700;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+.tree-node.lvl-1 > .node-row:hover {
+  background: #e2e8f0;
+}
+.tree-node.lvl-2 > .node-row {
+  font-size: 14px;
+  font-weight: 600;
+}
+.tree-node.lvl-3 > .node-row {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Кнопка розгортання підкатегорій [+][-] */
+.btn-exp {
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-family: monospace;
+  font-weight: bold;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.btn-exp:hover {
+  background: #e2e8f0;
+}
+.btn-exp.empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Бейджі рівнів */
+.lvl-badge {
+  font-size: 11px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.lvl-badge.l1 { background: #1e293b; color: #ffffff; }
+.lvl-badge.l2 { background: #0284c7; color: #ffffff; }
+.lvl-badge.l3 { background: #64748b; color: #ffffff; }
+
+.node-name {
+  flex: 1;
+  word-break: break-word;
+}
+
+.node-counts {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: normal;
+  flex-shrink: 0;
+}
+
+.site-link {
+  font-size: 12px;
+  color: #2563eb;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.site-link:hover {
+  text-decoration: underline;
+}
+
+/* Кнопка показу/приховання товарів (однакова фіксована ширина для всіх кнопок) */
+.btn-prods {
+  width: 320px;
+  min-width: 320px;
+  font-size: 12px;
+  padding: 3px 8px;
+  font-family: inherit;
+  font-weight: 500;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #1e293b;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  box-sizing: border-box;
+  transition: all 0.12s ease;
+  user-select: none;
+}
+.btn-prods:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+.btn-prods.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+}
+
+/* Візуальний акцент для "безхозних" товарів (поза підкатегоріями) */
+.btn-prods.orphan {
+  background: #fffbeb;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+.btn-prods.orphan:hover {
+  background: #fef3c7;
+  border-color: #d97706;
+}
+.btn-prods.orphan.active {
+  background: #d97706;
+  color: #ffffff;
+  border-color: #b45309;
+}
+
+/* Складові кнопки товарів */
+.btn-prods-label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.btn-prods-counts {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.btn-prods.active .btn-prods-counts {
+  background: rgba(255, 255, 255, 0.22);
+}
+.count-total {
+  font-weight: 700;
+}
+.count-sep {
+  opacity: 0.5;
+}
+.count-no {
+  color: #dc2626;
+  font-weight: 600;
+}
+.btn-prods.active .count-no {
+  color: #fee2e2;
+}
+.count-no.zero {
+  color: #16a34a;
+}
+.btn-prods.active .count-no.zero {
+  color: #dcfce7;
+}
+.btn-prods-arrow {
+  font-size: 10px;
+  opacity: 0.75;
+  margin-left: 2px;
+}
+
+/* Порожній стан для категорій без власних товарів (фіксує сітку 320px) */
+.btn-prods.empty {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  color: #94a3b8;
+  cursor: default;
+}
+.btn-prods.empty:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+.btn-prods.orphan.empty {
+  background: #fffdf5;
+  border: 1px dashed #fcd34d;
+  color: #b45309;
+}
+.btn-prods.orphan.empty:hover {
+  background: #fffdf5;
+  border-color: #fcd34d;
+}
+.btn-prods.empty .btn-prods-counts {
+  background: rgba(0, 0, 0, 0.04);
+  color: inherit;
+}
+.btn-prods.empty .btn-prods-arrow {
+  opacity: 0.4;
+}
+
+/* Вкладеність підкатегорій */
+.node-children {
+  padding-left: 20px;
+  border-left: 2px solid #e2e8f0;
+  margin-left: 10px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+}
+.node-children.hidden {
+  display: none;
+}
+
+/* Блок товарів */
+.node-products {
+  margin: 6px 0 10px 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+.node-products.hidden {
+  display: none;
+}
+
+/* Таблиця товарів */
+.table-prods {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.table-prods th {
+  background: #f8fafc;
+  padding: 5px 8px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4b5563;
+  font-weight: 600;
+}
+.table-prods td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+.table-prods tr:last-child td {
+  border-bottom: none;
+}
+.table-prods tr:hover {
+  background: #f8fafc;
+}
+
+.table-prods .col-n {
+  width: 32px;
+  text-align: center;
+  color: #94a3b8;
+}
+.table-prods .col-code {
+  width: 80px;
+  font-family: monospace;
+  color: #334155;
+}
+.table-prods .col-name a {
+  color: #0f172a;
+  text-decoration: none;
+}
+.table-prods .col-name a:hover {
+  color: #2563eb;
+  text-decoration: underline;
+}
+.table-prods .col-avail {
+  width: 120px;
+  text-align: center;
+}
+
+.badge-yes {
+  color: #166534;
+  background: #dcfce7;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  display: inline-block;
+}
+.badge-no {
+  color: #991b1b;
+  background: #fee2e2;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  display: inline-block;
+}
+
+@media (max-width: 860px) {
+  .btn-prods {
+    width: 100%;
+    min-width: unset;
+  }
+}
