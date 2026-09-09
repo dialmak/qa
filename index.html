@@ -1,1 +1,343 @@
-<h1>СЛАВА УКРАЇНІ!</h1>
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Слава Україні! — Героям Слава!</title>
+  <meta name="description" content="Слава Україні! Героям Слава!">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('slava_theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.2);
+      
+      --text-white: #ffffff;
+      
+      --ua-blue: #38bdf8;
+      --ua-blue-deep: #0284c7;
+      --ua-gold: #fbbf24;
+      --ua-gold-deep: #f59e0b;
+
+      --glow-blue: rgba(56, 189, 248, 0.24);
+      --glow-gold: rgba(251, 191, 36, 0.24);
+      --btn-bg: rgba(255, 255, 255, 0.06);
+      --btn-hover: rgba(255, 255, 255, 0.12);
+      --btn-border: rgba(255, 255, 255, 0.1);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.88);
+      --card-border: rgba(0, 0, 0, 0.07);
+      --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05);
+
+      --text-white: #0f172a;
+
+      --ua-blue: #0284c7;
+      --ua-blue-deep: #0369a1;
+      --ua-gold: #d97706;
+      --ua-gold-deep: #b45309;
+
+      --glow-blue: rgba(2, 132, 199, 0.16);
+      --glow-gold: rgba(217, 119, 6, 0.16);
+      --btn-bg: rgba(0, 0, 0, 0.04);
+      --btn-hover: rgba(0, 0, 0, 0.08);
+      --btn-border: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Фонове анімоване світіння */
+    .ambient-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .orb-blue {
+      position: absolute;
+      top: 15%;
+      left: 12%;
+      width: clamp(280px, 45vw, 550px);
+      height: clamp(280px, 45vw, 550px);
+      background: radial-gradient(circle, var(--glow-blue) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: floatOrb 12s ease-in-out infinite alternate;
+    }
+    .orb-gold {
+      position: absolute;
+      bottom: 15%;
+      right: 12%;
+      width: clamp(280px, 45vw, 550px);
+      height: clamp(280px, 45vw, 550px);
+      background: radial-gradient(circle, var(--glow-gold) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: floatOrb 14s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -40px) scale(1.15); }
+    }
+
+    /* Кнопка теми */
+    .top-bar {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+    }
+    .btn-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--text-white);
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .btn-toggle:hover {
+      background: var(--btn-hover);
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    /* Центральна картка */
+    .stage-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 580px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 32px;
+      padding: clamp(36px, 8vw, 60px) clamp(24px, 6vw, 48px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--card-shadow);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes cardAppear {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Герб (Тризуб) */
+    .emblem-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+    .emblem-halo {
+      position: absolute;
+      inset: -14px;
+      background: radial-gradient(circle, var(--glow-gold) 0%, transparent 75%);
+      border-radius: 50%;
+      filter: blur(14px);
+      animation: pulseHalo 4s ease-in-out infinite alternate;
+    }
+    @keyframes pulseHalo {
+      0% { opacity: 0.6; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1.25); }
+    }
+    .emblem-svg {
+      width: 56px;
+      height: 76px;
+      position: relative;
+      filter: drop-shadow(0 4px 14px rgba(251, 191, 36, 0.45));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .stage-card:hover .emblem-svg {
+      transform: scale(1.08);
+    }
+
+    /* Заголовки */
+    .motto-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 0;
+    }
+
+    .line-call {
+      font-size: clamp(2.3rem, 7.5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #ffffff 10%, var(--ua-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 32px rgba(56, 189, 248, 0.35);
+    }
+
+    [data-theme="light"] .line-call {
+      background: linear-gradient(135deg, #0f172a 30%, var(--ua-blue-deep) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+    }
+
+    .line-response {
+      font-size: clamp(2.3rem, 7.5vw, 3.6rem);
+      font-weight: 900;
+      line-height: 1.12;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--ua-gold) 0%, var(--ua-gold-deep) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 32px rgba(251, 191, 36, 0.35);
+    }
+
+    [data-theme="light"] .line-response {
+      background: linear-gradient(135deg, #b45309 0%, #d97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+    }
+
+    /* Адаптація для маленьких екранів */
+    @media (max-width: 480px) {
+      .stage-card {
+        padding: 38px 20px;
+        border-radius: 24px;
+      }
+      .emblem-wrap {
+        margin-bottom: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- М'яке фонове сяйво -->
+  <div class="ambient-mesh" aria-hidden="true">
+    <div class="orb-blue"></div>
+    <div class="orb-gold"></div>
+  </div>
+
+  <!-- Кнопка теми (світла / темна) -->
+  <div class="top-bar">
+    <button id="btn-theme" class="btn-toggle" title="Змінити тему">
+      <span id="theme-icon">🌙</span>
+    </button>
+  </div>
+
+  <!-- Головна картка -->
+  <main class="stage-card">
+    
+    <!-- Векторний Державний Герб України (Тризуб) -->
+    <div class="emblem-wrap" aria-label="Герб України">
+      <div class="emblem-halo"></div>
+      <svg class="emblem-svg" viewBox="0 0 100 135" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="tryzubGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="40%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#d97706"/>
+          </linearGradient>
+        </defs>
+        <!-- Центральний та бічні елементи Тризуба -->
+        <path d="M50 6 L50 84 M50 6 L42 20 L42 56 C42 74 32 82 20 82 C14 82 11 78 11 70 L11 36 L17 42 L17 26 L4 38 L4 70 C4 88 16 100 32 100 C40 100 46 96 50 90 C54 96 60 100 68 100 C84 100 96 88 96 70 L96 38 L83 26 L83 42 L89 36 L89 70 C89 78 86 82 80 82 C68 82 58 74 58 56 L58 20 Z M50 84 L50 114 M40 114 L60 114 M44 126 L56 126" 
+              stroke="url(#tryzubGrad)" 
+              stroke-width="5" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Заповітні слова -->
+    <div class="motto-group">
+      <h1 class="line-call">Слава Україні!</h1>
+      <h2 class="line-response">Героям Слава!</h2>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      const themeBtn = document.getElementById('btn-theme');
+      const themeIcon = document.getElementById('theme-icon');
+
+      function updateThemeIcon(t) {
+        if (themeIcon) {
+          themeIcon.textContent = t === 'light' ? '☀️' : '🌙';
+        }
+      }
+
+      const initialTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      updateThemeIcon(initialTheme);
+
+      if (themeBtn) {
+        themeBtn.addEventListener('click', function () {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          try {
+            localStorage.setItem('slava_theme', next);
+          } catch (e) {}
+          updateThemeIcon(next);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
