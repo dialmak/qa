@@ -25,40 +25,12 @@
 </head>
 <body>
 
-  <!-- Проста ділова шапка з пошуком та адаптивним меню -->
+  <!-- Проста ділова шапка -->
   <header class="app-header">
     <div class="header-left">
-      <!-- Кнопка мобільного меню категорій -->
-      <button id="btn-mobile-sidebar" class="btn-mobile-menu" aria-label="Відкрити меню категорій" title="Меню категорій">
-        <span class="menu-icon">☰</span> <span class="menu-text">Категорії</span>
-      </button>
-
-      <a href="index.html" class="nav-hub-link" title="Повернутися до навігатора мап">← Усі мапи</a>
-
-      <div class="header-titles">
-        <span class="catalog-title">Контролери для ЧПК</span>
-        <span class="catalog-subtitle">Мапа розділу (1–3 рівні)</span>
-      </div>
+      <span class="catalog-title">Контролери для ЧПК</span>
+      <span class="catalog-subtitle">Мапа розділу (1–3 рівні)</span>
     </div>
-
-    <!-- Елегантний пошуковий блок у центрі -->
-    <div class="header-search">
-      <div class="search-box-wrap">
-        <span class="search-icon" aria-hidden="true">🔍</span>
-        <input 
-          type="text" 
-          id="search-input" 
-          class="search-input" 
-          placeholder="Пошук товарів, артикулів, категорій..." 
-          autocomplete="off" 
-          spellcheck="false"
-        >
-        <kbd class="search-kbd" title="Гаряча клавіша фокусу">Ctrl+K</kbd>
-        <button id="search-clear" class="btn-search-clear" title="Очистити пошук (Esc)" style="display: none;">✕</button>
-      </div>
-      <span id="search-count-badge" class="search-count-badge" style="display: none;"></span>
-    </div>
-
     <div class="header-right">
       <button id="btn-theme-toggle" class="btn-theme-toggle" title="Перемкнути тему оформлення (світла / темна)">
         <span class="theme-icon">🌙</span> <span class="theme-text">Темна</span>
@@ -69,14 +41,11 @@
     </div>
   </header>
 
-  <!-- Мобільна підкладка-оверлей -->
-  <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
-
   <!-- Робочий простір: меню зліва + вміст праворуч -->
   <div class="workspace">
 
     <!-- ЛІВЕ МЕНЮ КАТЕГОРІЙ -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar">
       <div class="sidebar-top">
         <span class="sidebar-label">Категорії</span>
         <div class="sidebar-tools">
@@ -133,7 +102,7 @@
         </div>
       </div>
 
-      <!-- Область контенту (таблиці або результати пошуку) -->
+      <!-- Область контенту (таблиці) -->
       <div class="content-body" id="content-body">
         <!-- Генерується через app.js -->
       </div>

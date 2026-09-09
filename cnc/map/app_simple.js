@@ -1,10 +1,9 @@
 /**
  * site_map / app_simple.js
- * Спрощений скрипт вертикального списку каталогу
- * - Підтримка тем (темна за замовчуванням / світла)
- * - Повна адаптивність (mobile / tablet / desktop)
- * - Живий пошук з підсвічуванням збігів, лічильником та гарячими клавішами
- * - Незалежне розгортання підкатегорій [+][-] та товарів
+ * Максимально простий скрипт вертикального списку каталогу
+ * - Без тем оформлення
+ * - За замовчуванням: розгорнуті всі категорії та підкатегорії (товари приховані)
+ * - Окреме розгортання/згортання товарів по кожній категорії
  */
 
 (function () {
@@ -13,8 +12,7 @@
   const state = {
     subcatsExpanded: new Set(),
     productsExpanded: new Set(),
-    filterText: '',
-    theme: 'dark'
+    filterText: ''
   };
 
   let rootNode = null;
@@ -22,61 +20,16 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     if (!window.CATALOG_DATA || !window.CATALOG_DATA.tree) {
-      document.getElementById('tree').innerHTML = '<div style="color:red; padding:16px;">Дані каталогу не знайдено (data.js). Перевірте наявність файлу.</div>';
+      document.getElementById('tree').innerHTML = '<div style="color:red; padding:10px;">Дані каталогу не знайдено (data.js).</div>';
       return;
     }
 
     rootNode = window.CATALOG_DATA.tree;
     indexNodes(rootNode);
-    initTheme();
     resetToDefault();
     setupEvents();
   });
 
-  // ── ТЕМА ОФОРМЛЕННЯ (ТЕМНА ЗА ЗАМОВЧУВАННЯМ) ──────────────────────────────
-  function initTheme() {
-    let savedTheme = 'dark';
-    try {
-      savedTheme = localStorage.getItem('theme_simple') || 'dark';
-    } catch (e) {
-      savedTheme = 'dark';
-    }
-
-    setTheme(savedTheme);
-
-    const toggleBtn = document.getElementById('btn-theme-toggle');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', () => {
-        const next = state.theme === 'dark' ? 'light' : 'dark';
-        setTheme(next);
-      });
-    }
-  }
-
-  function setTheme(theme) {
-    state.theme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    try {
-      localStorage.setItem('theme_simple', theme);
-    } catch (e) {}
-
-    const toggleBtn = document.getElementById('btn-theme-toggle');
-    if (toggleBtn) {
-      const icon = toggleBtn.querySelector('.theme-icon');
-      const label = toggleBtn.querySelector('.theme-label');
-      if (theme === 'dark') {
-        if (icon) icon.textContent = '🌙';
-        if (label) label.textContent = 'Темна';
-        toggleBtn.title = 'Перемкнути на світлу тему';
-      } else {
-        if (icon) icon.textContent = '☀️';
-        if (label) label.textContent = 'Світла';
-        toggleBtn.title = 'Перемкнути на темну тему';
-      }
-    }
-  }
-
-  // ── ІНДЕКСАЦІЯ ВУЗЛІВ ─────────────────────────────────────────────────────
   function indexNodes(node) {
     allNodes.push(node);
     if (node.children) {
@@ -90,6 +43,7 @@
     state.productsExpanded = new Set();
     state.filterText = '';
 
+    // Розгортаємо всі вузли, які мають дочірні підкатегорії
     allNodes.forEach(node => {
       if (node.children && node.children.length > 0) {
         state.subcatsExpanded.add(node.id);
@@ -98,64 +52,16 @@
 
     const searchInput = document.getElementById('search-input');
     if (searchInput) searchInput.value = '';
-    updateSearchControls();
 
     render();
   }
 
-  // ── РЕНДЕРИНГ ─────────────────────────────────────────────────────────────
   function render() {
     const container = document.getElementById('tree');
     container.innerHTML = '';
 
     if (!rootNode) return;
-
-    const q = state.filterText.trim().toLowerCase();
-    if (q) {
-      // Підрахунок знайденого
-      let totalMatchingProds = 0;
-      let matchingCatsCount = 0;
-
-      allNodes.forEach(n => {
-        const prods = n.own_products || [];
-        const matches = prods.filter(p => 
-          p.name.toLowerCase().includes(q) || (p.code && p.code.toLowerCase().includes(q))
-        );
-        if (matches.length > 0) {
-          totalMatchingProds += matches.length;
-          matchingCatsCount++;
-        } else if (n.name.toLowerCase().includes(q)) {
-          matchingCatsCount++;
-        }
-      });
-
-      const statsEl = document.getElementById('search-stats');
-      if (statsEl) {
-        statsEl.style.display = 'block';
-        if (totalMatchingProds > 0 || matchingCatsCount > 0) {
-          statsEl.innerHTML = `Знайдено: <b>${totalMatchingProds}</b> товарів у <b>${matchingCatsCount}</b> категоріях`;
-        } else {
-          statsEl.innerHTML = `Нічого не знайдено за запитом «<b>${escapeHtml(q)}</b>»`;
-        }
-      }
-
-      const nodeEl = renderNode(rootNode);
-      if (nodeEl && nodeEl.style.display !== 'none') {
-        container.appendChild(nodeEl);
-      } else {
-        container.innerHTML = `
-          <div class="empty-search-msg">
-            За запитом «<b>${escapeHtml(q)}</b>» нічого не знайдено.<br>
-            Спробуйте інший код товару (наприклад, <code>05-016</code>) або назву.
-          </div>
-        `;
-      }
-    } else {
-      const statsEl = document.getElementById('search-stats');
-      if (statsEl) statsEl.style.display = 'none';
-
-      container.appendChild(renderNode(rootNode));
-    }
+    container.appendChild(renderNode(rootNode));
   }
 
   function renderNode(node) {
@@ -195,7 +101,6 @@
     btnExp.className = `btn-exp ${!hasChildren ? 'empty' : ''}`;
     btnExp.textContent = isSubExpanded ? '−' : '+';
     btnExp.title = isSubExpanded ? 'Згорнути підкатегорії' : 'Розгорнути підкатегорії';
-    btnExp.setAttribute('aria-label', isSubExpanded ? 'Згорнути підкатегорії' : 'Розгорнути підкатегорії');
     btnExp.addEventListener('click', (e) => {
       e.stopPropagation();
       if (!hasChildren) return;
@@ -217,7 +122,7 @@
     // Назва категорії
     const name = document.createElement('span');
     name.className = 'node-name';
-    name.innerHTML = q ? highlightText(node.name, q) : escapeHtml(node.name);
+    name.textContent = node.name;
     row.appendChild(name);
 
     // Посилання на сайт
@@ -273,7 +178,8 @@
       });
       row.appendChild(btnP);
     } else {
-      // Порожній стан для вирівнювання сітки на десктопі
+      // Якщо в категорії 0 власних товарів (наприклад, усі товари розподілені по підкатегоріях),
+      // створюємо блок фіксованої ширини (320px), щоб вертикальне вирівнювання колонок не з'їжджало
       row.classList.add('no-prods');
       const btnP = document.createElement('div');
       btnP.className = `btn-prods empty ${isOrphan ? 'orphan' : ''}`;
@@ -290,10 +196,11 @@
       row.appendChild(btnP);
     }
 
+    // Підказка при наведенні
     const labelForTitle = hasChildren ? 'товари поза підкатегоріями' : 'товари категорії';
     row.title = hasProds ? (isProdExpanded ? `Згорнути ${labelForTitle}` : `Розгорнути ${labelForTitle}`) : '';
 
-    // Клік по рядку розгортає/згортає товари
+    // Клік по рядку розгортає/згортає товари (підкатегорії керуються виключно окремою кнопкою [+/-] зліва)
     row.addEventListener('click', () => {
       if (hasProds) {
         if (state.productsExpanded.has(node.id)) {
@@ -311,7 +218,7 @@
     if (hasProds) {
       const prodsWrap = document.createElement('div');
       prodsWrap.className = `node-products ${isProdExpanded ? '' : 'hidden'}`;
-      prodsWrap.appendChild(renderTable(filteredProds, q));
+      prodsWrap.appendChild(renderTable(filteredProds));
       wrap.appendChild(prodsWrap);
     }
 
@@ -335,29 +242,26 @@
     return false;
   }
 
-  function renderTable(products, q) {
+  function renderTable(products) {
     const table = document.createElement('table');
     table.className = 'table-prods';
 
     if (!products || products.length === 0) {
-      table.innerHTML = '<tr><td style="padding:10px; color:var(--text-muted);">Товарів не знайдено</td></tr>';
+      table.innerHTML = '<tr><td style="padding:8px; color:#9ca3af;">Товарів не знайдено</td></tr>';
       return table;
     }
 
     const rows = products.map((p, idx) => {
       const isYes = p.availability && p.availability.toLowerCase().includes('в наявності');
-      const codeHtml = p.code ? (q ? highlightText(p.code, q) : escapeHtml(p.code)) : '—';
-      const nameHtml = q ? highlightText(p.name, q) : escapeHtml(p.name);
-
       return `
         <tr>
           <td class="col-n">${p.index || (idx + 1)}</td>
-          <td class="col-code">${codeHtml}</td>
+          <td class="col-code">${p.code || '—'}</td>
           <td class="col-name">
-            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer">${nameHtml}</a>` : nameHtml}
+            ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer">${p.name}</a>` : p.name}
           </td>
           <td class="col-avail">
-            <span class="${isYes ? 'badge-yes' : 'badge-no'}">${escapeHtml(p.availability || '—')}</span>
+            <span class="${isYes ? 'badge-yes' : 'badge-no'}">${p.availability || '—'}</span>
           </td>
         </tr>
       `;
@@ -380,34 +284,19 @@
     return table;
   }
 
-  function updateSearchControls() {
-    const searchInput = document.getElementById('search-input');
-    const clearBtn = document.getElementById('search-clear');
-    if (!searchInput || !clearBtn) return;
-
-    if (searchInput.value.trim().length > 0) {
-      clearBtn.style.display = 'block';
-    } else {
-      clearBtn.style.display = 'none';
-    }
-  }
-
-  // ── ОБРОБКА ПОДІЙ ТА ГАРЯЧИХ КЛАВІШ ───────────────────────────────────────
   function setupEvents() {
+    // Пошук
     const searchInput = document.getElementById('search-input');
-    const clearBtn = document.getElementById('search-clear');
-
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         state.filterText = e.target.value;
-        updateSearchControls();
-
         if (state.filterText.trim()) {
           allNodes.forEach(n => {
             if (n.children && n.children.length > 0) state.subcatsExpanded.add(n.id);
             if (n.own_products && n.own_products.length > 0) state.productsExpanded.add(n.id);
           });
         } else {
+          // Якщо рядок пошуку порожній — повертаємося до дефолту
           state.subcatsExpanded.clear();
           allNodes.forEach(n => {
             if (n.children && n.children.length > 0) state.subcatsExpanded.add(n.id);
@@ -416,68 +305,7 @@
         }
         render();
       });
-
-      // Escape для очищення пошуку
-      searchInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          searchInput.value = '';
-          state.filterText = '';
-          updateSearchControls();
-          resetToDefault();
-        }
-      });
     }
-
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        if (searchInput) {
-          searchInput.value = '';
-          searchInput.focus();
-        }
-        state.filterText = '';
-        updateSearchControls();
-        resetToDefault();
-      });
-    }
-
-    // Глобальні гарячі клавіші (Ctrl+K або '/')
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        if (searchInput) {
-          searchInput.focus();
-          searchInput.select();
-        }
-      } else if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT') {
-        e.preventDefault();
-        if (searchInput) {
-          searchInput.focus();
-        }
-      }
-    });
-  }
-
-  // ── ДОПОМІЖНІ ФУНКЦІЇ ─────────────────────────────────────────────────────
-  function escapeHtml(str) {
-    if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
-  function highlightText(text, query) {
-    if (!text) return '';
-    if (!query) return escapeHtml(text);
-
-    const safeText = String(text);
-    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(${escapedQuery})`, 'gi');
-
-    // Безпечне екранування перед виділенням тегом
-    return safeText.replace(regex, '<mark class="search-highlight">$1</mark>');
   }
 
 })();

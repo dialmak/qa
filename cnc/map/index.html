@@ -1,12 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="uk">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Контролери для ЧПК — Навігатор мап каталогу</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
   <style>
     :root {
       --bg-base: #0a0e17;
@@ -17,7 +21,7 @@
       --text-primary: #f9fafb;
       --text-secondary: #9ca3af;
       --text-muted: #6b7280;
-      
+
       --accent-simple: #06b6d4;
       --accent-simple-glow: rgba(6, 182, 212, 0.2);
       --accent-full: #3b82f6;
@@ -214,9 +218,17 @@
       border: 1px solid var(--border-subtle);
     }
 
-    .card-simple .card-icon-box svg { color: var(--accent-simple); }
-    .card-full .card-icon-box svg { color: var(--accent-full); }
-    .card-new .card-icon-box svg { color: var(--accent-new); }
+    .card-simple .card-icon-box svg {
+      color: var(--accent-simple);
+    }
+
+    .card-full .card-icon-box svg {
+      color: var(--accent-full);
+    }
+
+    .card-new .card-icon-box svg {
+      color: var(--accent-new);
+    }
 
     .card-tag {
       font-size: 11px;
@@ -296,9 +308,17 @@
       transition: gap 0.2s ease;
     }
 
-    .card-simple .card-action { color: #38bdf8; }
-    .card-full .card-action { color: #60a5fa; }
-    .card-new .card-action { color: #a78bfa; }
+    .card-simple .card-action {
+      color: #38bdf8;
+    }
+
+    .card-full .card-action {
+      color: #60a5fa;
+    }
+
+    .card-new .card-action {
+      color: #a78bfa;
+    }
 
     .card-arrow {
       font-size: 18px;
@@ -362,9 +382,11 @@
       .container {
         padding: 24px 16px;
       }
+
       .cards-grid {
         grid-template-columns: 1fr;
       }
+
       .info-bar {
         flex-direction: column;
         align-items: flex-start;
@@ -372,6 +394,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -392,7 +415,8 @@
         <div>
           <div class="card-header">
             <div class="card-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
                 <line x1="8" y1="12" x2="21" y2="12"></line>
                 <line x1="8" y1="18" x2="21" y2="18"></line>
@@ -411,8 +435,10 @@
 
           <ul class="card-features">
             <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Темна тема за замовчуванням, живий пошук товарів, адаптивний список
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Розгорнуті підкатегорії за замовчуванням та окремий показ товарів
             </li>
           </ul>
         </div>
@@ -428,7 +454,8 @@
         <div>
           <div class="card-header">
             <div class="card-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
                 <polyline points="2 17 12 22 22 17"></polyline>
                 <polyline points="2 12 12 17 22 12"></polyline>
@@ -444,8 +471,10 @@
 
           <ul class="card-features">
             <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              Живий пошук з підсвічуванням збігів, мобільне меню та теми
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              Бічна панель навігації, живий пошук товарів та перемикання тем
             </li>
           </ul>
         </div>
@@ -461,7 +490,8 @@
         <div>
           <div class="card-header">
             <div class="card-icon-box">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
               </svg>
@@ -476,8 +506,10 @@
 
           <ul class="card-features">
             <li>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              8 категорій (0 нерозподілених), живий пошук товарів та аркуш видалення
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              8 збалансованих категорій 2-го рівня (0 нерозподілених товарів)
             </li>
           </ul>
         </div>
@@ -502,14 +534,15 @@
         <span class="info-stat-item">Дані актуальні на: <strong id="current-date">09.09.2026</strong></span>
       </div>
 
-      <a href="https://cncprom.ua/ua/g1022485-kontroleri-dlya-chpu" target="_blank" rel="noopener noreferrer" class="site-link">
+      <a href="https://cncprom.ua/ua/g1022485-kontroleri-dlya-chpu" target="_blank" rel="noopener noreferrer"
+        class="site-link">
         Перейти на розділ cncprom.ua ↗
       </a>
     </footer>
   </div>
 
   <script>
-    (function() {
+    (function () {
       try {
         const d = new Date();
         const day = String(d.getDate()).padStart(2, '0');
@@ -517,8 +550,9 @@
         const year = d.getFullYear();
         const el = document.getElementById('current-date');
         if (el) el.textContent = `${day}.${month}.${year}`;
-      } catch (e) {}
+      } catch (e) { }
     })();
   </script>
 </body>
+
 </html>
