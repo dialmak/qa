@@ -34,6 +34,32 @@ body {
   flex-wrap: wrap;
 }
 
+.top-bar-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4b5563;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.btn-back:hover {
+  background: #e5e7eb;
+  color: #111827;
+}
+
 .top-bar h2 {
   font-size: 18px;
   font-weight: 700;
@@ -144,6 +170,7 @@ body {
   color: #6b7280;
   font-weight: normal;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .site-link {
@@ -151,6 +178,7 @@ body {
   color: #2563eb;
   text-decoration: none;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .site-link:hover {
   text-decoration: underline;
@@ -364,9 +392,72 @@ body {
   display: inline-block;
 }
 
-@media (max-width: 860px) {
+/* ── АДАПТИВНІСТЬ ДЛЯ МОБІЛЬНИХ ПРИСТРОЇВ ТА ПЛАНШЕТІВ ─────────────────── */
+@media (max-width: 820px) {
+  body {
+    padding: 12px 10px 32px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .top-bar-title {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .top-bar h2 {
+    font-size: 16px;
+  }
+
+  .search-input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  /* Дозволяємо рядку категорії переносити елементи */
+  .node-row {
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    padding: 7px 6px;
+  }
+
+  .node-name {
+    min-width: 130px;
+  }
+
+  /* Кнопка розгортання товарів переноситься на окремий рядок на всю ширину */
   .btn-prods {
     width: 100%;
-    min-width: unset;
+    min-width: 0;
+    margin-top: 4px;
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+
+  /* Порожній плейсхолдер з нулем товарів на мобільних приховується, щоб не захаращувати екран */
+  .btn-prods.empty {
+    display: none;
+  }
+
+  /* Зменшуємо відступи вкладеності, щоб не виїжджати за межі смартфона */
+  .node-children {
+    padding-left: 10px;
+    margin-left: 6px;
+  }
+
+  /* Блок товарів на мобільному */
+  .node-products {
+    margin: 6px 0 10px 4px;
+  }
+
+  /* Забезпечуємо горизонтальну прокрутку таблиці замість розпирання сторінки */
+  .table-prods {
+    min-width: 440px;
   }
 }
