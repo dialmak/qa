@@ -91,31 +91,174 @@ a:hover {
 
 /* ── ВЕРХНЯ ШАПКА ────────────────────────────────────────────────────────── */
 .app-header {
-  height: 44px;
+  min-height: 48px;
   background: var(--bg-header);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  z-index: 10;
+  padding: 6px 16px;
+  gap: 12px;
+  z-index: 50;
+  position: relative;
 }
 
 .header-left {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Кнопка мобільного меню */
+.btn-mobile-menu {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 6px;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-subtle);
+  color: var(--text-main);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+.btn-mobile-menu:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-active);
+}
+
+.nav-hub-link {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-link);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.nav-hub-link:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-active);
+}
+
+.header-titles {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .catalog-title {
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
+  white-space: nowrap;
 }
 
 .catalog-subtitle {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ── ПОШУКОВИЙ БЛОК У ШАПЦІ ──────────────────────────────────────────────── */
+.header-search {
+  flex: 1;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-box-wrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 6px 75px 6px 32px;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.search-input:focus {
+  border-color: var(--border-active);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+[data-theme="dark"] .search-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-kbd {
+  position: absolute;
+  right: 28px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  padding: 1px 5px;
+  border-radius: 3px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.btn-search-clear {
+  position: absolute;
+  right: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  border-radius: 3px;
+}
+.btn-search-clear:hover {
+  color: var(--text-main);
+}
+
+.search-count-badge {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  color: var(--text-link);
+  white-space: nowrap;
 }
 
 .link-site {
@@ -127,14 +270,15 @@ a:hover {
 .header-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .btn-theme-toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 9px;
+  padding: 4px 10px;
   font-size: 0.75rem;
   font-weight: 500;
   border: 1px solid var(--border-color);
@@ -154,11 +298,25 @@ a:hover {
   line-height: 1;
 }
 
+/* ── МАТОВА ПІДКЛАДКА ДЛЯ МОБІЛЬНОГО МЕНЮ ─────────────────────────────────── */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 45;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.active {
+  display: block;
+}
+
 /* ── РОБОЧИЙ ПРОСТІР (ДВОКОЛОНКОВИЙ) ─────────────────────────────────────── */
 .workspace {
   display: grid;
   grid-template-columns: 320px 1fr;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 48px);
   overflow: hidden;
 }
 
@@ -717,20 +875,192 @@ a:hover {
   border-color: var(--border-dark);
 }
 
-/* ── АДАПТИВНІСТЬ ────────────────────────────────────────────────────────── */
-@media (max-width: 800px) {
+/* ── СТИЛІ ПОШУКУ В КОНТЕНТІ ТА ПІДСВІЧУВАННЯ ────────────────────────────── */
+mark.search-highlight {
+  background-color: #fef08a;
+  color: #854d0e;
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+[data-theme="dark"] mark.search-highlight {
+  background-color: #ca8a04;
+  color: #ffffff;
+}
+
+.search-results-banner {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--border-active);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-results-info {
+  font-size: 0.88rem;
+  color: var(--text-main);
+}
+.search-results-info b {
+  color: var(--text-link);
+}
+
+.btn-reset-search {
+  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-reset-search:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-dark);
+}
+
+.nav-row.has-search-match {
+  border-left: 3px solid var(--border-active);
+  font-weight: 600;
+}
+
+.nav-match-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--border-active);
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+
+.nav-row.search-dimmed {
+  opacity: 0.4;
+}
+
+/* Обгортка таблиць для плавної горизонтальної прокрутки */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* ── АДАПТИВНІСТЬ (MOBILE & TABLET RESPONSIVE) ───────────────────────────── */
+@media (max-width: 860px) {
+  html, body {
+    height: auto;
+    overflow: visible;
+  }
+
+  .app-header {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 8px 12px;
+    gap: 8px 12px;
+  }
+
+  .btn-mobile-menu {
+    display: inline-flex;
+  }
+
+  .header-search {
+    order: 3;
+    width: 100%;
+    max-width: 100%;
+    margin: 4px 0 2px;
+  }
+
   .workspace {
     grid-template-columns: 1fr;
     height: auto;
     overflow: visible;
   }
-  html, body {
-    overflow: visible;
-    height: auto;
-  }
+
+  /* Сайдбар стає висувною шторкою на мобільному */
   .sidebar {
-    max-height: 300px;
-    border-right: none;
-    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -320px;
+    width: 300px;
+    height: 100vh;
+    max-height: 100vh;
+    z-index: 50;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar.mobile-open {
+    left: 0;
+  }
+
+  .main-content {
+    padding: 14px 12px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .category-header {
+    padding: 12px;
+  }
+
+  .title-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .level-toggles-bar {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+@media (max-width: 580px) {
+  .catalog-subtitle {
+    display: none;
+  }
+
+  .search-kbd {
+    display: none;
+  }
+
+  .search-input {
+    padding-right: 32px;
+  }
+
+  .header-left {
+    gap: 6px;
+  }
+
+  .catalog-title {
+    font-size: 0.88rem;
+  }
+
+  .btn-theme-toggle .theme-text {
+    display: none;
+  }
+
+  .btn-theme-toggle {
+    padding: 4px 8px;
+  }
+
+  .data-table {
+    font-size: 0.78rem;
+    min-width: 540px;
+  }
+
+  .data-table th, .data-table td {
+    padding: 6px 8px;
+  }
+
+  .cat-title {
+    font-size: 1.1rem;
   }
 }

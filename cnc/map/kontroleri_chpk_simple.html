@@ -3,18 +3,77 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Контролери для ЧПК — Мапа сайту</title>
+  <title>Контролери для ЧПК — Спрощена мапа сайту</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style_simple.css">
+  
+  <!-- Темна тема за замовчуванням (із запобіганням мерехтіння) -->
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('theme_simple');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          // Темна за замовчуванням
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
 </head>
 <body>
 
   <div class="container">
-    <div class="top-bar">
-      <h2>Контролери для ЧПК — Мапа сайту</h2>
-      <input type="text" id="search-input" class="search-input" placeholder="Пошук...">
-    </div>
+    <!-- Верхня панель (адаптивна) -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <a href="index.html" class="nav-back-link" title="Повернутися до навігатора мап">← Усі мапи</a>
+        <div class="title-group">
+          <h1>Контролери для ЧПК</h1>
+          <span class="subtitle-badge">Спрощена вертикальна мапа</span>
+        </div>
+      </div>
 
-    <div id="tree" class="tree"></div>
+      <div class="top-bar-right">
+        <!-- Кнопка перемикання теми (темна / світла) -->
+        <button id="btn-theme-toggle" class="btn-theme-toggle" title="Перемкнути тему (темна / світла)">
+          <span class="theme-icon">🌙</span>
+          <span class="theme-label">Темна</span>
+        </button>
+
+        <a href="https://cncprom.ua/ua/g1022485-kontroleri-dlya-chpu" target="_blank" rel="noopener noreferrer" class="site-ext-link">
+          cncprom.ua ↗
+        </a>
+      </div>
+
+      <!-- Блок пошуку на повну ширину або в рядок -->
+      <div class="search-container">
+        <div class="search-box-wrap">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="Пошук товарів, артикулів, категорій... (Ctrl+K)" 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <kbd class="search-kbd" title="Гаряча клавіша фокусу">Ctrl+K</kbd>
+          <button id="search-clear" class="btn-search-clear" title="Очистити пошук (Esc)" style="display: none;">✕</button>
+        </div>
+        <div id="search-stats" class="search-stats" style="display: none;"></div>
+      </div>
+    </header>
+
+    <!-- Дерево каталогу -->
+    <main id="tree" class="tree"></main>
   </div>
 
   <script src="data.js"></script>

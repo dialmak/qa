@@ -1,62 +1,305 @@
 /* ==========================================================================
-   site_map / style_simple.css — Максимально простий стиль списку (без тем, мінімалізм)
+   site_map / style_simple.css
+   Спрощений вертикальний список каталогу із підтримкою тем та адаптивністю
    ========================================================================== */
 
-* {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', Consolas, Monaco, monospace;
+
+  /* ТЕМНА ТЕМА ЗА ЗАМОВЧУВАННЯМ */
+  --bg-base: #0b0f19;
+  --bg-surface: #131c2e;
+  --bg-surface-hover: #1e293b;
+  --bg-card: #162035;
+  --bg-subtle: #0f172a;
+
+  --border-subtle: #24334d;
+  --border-dark: #334668;
+  --border-active: #38bdf8;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-link: #38bdf8;
+
+  --accent-cyan: #38bdf8;
+  --accent-blue: #60a5fa;
+
+  --status-yes: #4ade80;
+  --status-yes-bg: rgba(34, 197, 94, 0.12);
+  --status-yes-border: rgba(34, 197, 94, 0.3);
+
+  --status-no: #f87171;
+  --status-no-bg: rgba(239, 68, 68, 0.12);
+  --status-no-border: rgba(239, 68, 68, 0.3);
+
+  --btn-orphan-bg: rgba(245, 158, 11, 0.12);
+  --btn-orphan-border: rgba(245, 158, 11, 0.35);
+  --btn-orphan-text: #fbbf24;
+  --btn-orphan-active-bg: #d97706;
+
+  --highlight-bg: #fef08a;
+  --highlight-text: #854d0e;
+}
+
+/* ── СВІТЛА ТЕМА (ПРИ ПЕРЕМИКАННІ) ───────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-base: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-card: #f8fafc;
+  --bg-subtle: #f1f5f9;
+
+  --border-subtle: #e2e8f0;
+  --border-dark: #cbd5e1;
+  --border-active: #0284c7;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --text-link: #0284c7;
+
+  --accent-cyan: #0284c7;
+  --accent-blue: #2563eb;
+
+  --status-yes: #15803d;
+  --status-yes-bg: #f0fdf4;
+  --status-yes-border: #bbf7d0;
+
+  --status-no: #b91c1c;
+  --status-no-bg: #fef2f2;
+  --status-no-border: #fecaca;
+
+  --btn-orphan-bg: #fffbeb;
+  --btn-orphan-border: #f59e0b;
+  --btn-orphan-text: #92400e;
+  --btn-orphan-active-bg: #d97706;
+
+  --highlight-bg: #fef08a;
+  --highlight-text: #854d0e;
+}
+
+/* ── ЗАГАЛЬНІ СТИЛІ СТОРІНКИ ─────────────────────────────────────────────── */
+html {
   font-size: 14px;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
   line-height: 1.5;
-  color: #111827;
-  background: #ffffff;
-  padding: 16px 20px 40px;
+  min-height: 100vh;
+  padding: 16px 20px 48px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1160px;
   margin: 0 auto;
+  width: 100%;
 }
 
-/* Верхня панель */
+/* ── ВЕРХНЯ ПАНЕЛЬ (HEADER) ──────────────────────────────────────────────── */
 .top-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: 
+    "left right"
+    "search search";
+  gap: 14px 16px;
+  align-items: center;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.top-bar-left {
+  grid-area: left;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-bottom: 2px solid #e5e7eb;
-  padding-bottom: 12px;
-  margin-bottom: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
-.top-bar h2 {
-  font-size: 18px;
+.nav-back-link {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-link);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  transition: all 0.15s ease;
+}
+.nav-back-link:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-hover);
+}
+
+.title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.title-group h1 {
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #111827;
-  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.subtitle-badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.top-bar-right {
+  grid-area: right;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Кнопка перемикання теми */
+.btn-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+.btn-theme-toggle:hover {
+  background: var(--bg-surface-hover);
+  border-color: var(--border-hover);
+}
+
+.site-ext-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-link);
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: opacity 0.15s ease;
+}
+.site-ext-link:hover {
+  text-decoration: underline;
+}
+
+/* ── КОНТЕЙНЕР ПОШУКУ ────────────────────────────────────────────────────── */
+.search-container {
+  grid-area: search;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.search-box-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  pointer-events: none;
 }
 
 .search-input {
-  padding: 6px 12px;
-  font-size: 13px;
+  width: 100%;
+  padding: 9px 85px 9px 38px;
+  font-size: 0.88rem;
   font-family: inherit;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  min-width: 240px;
-}
-.search-input:focus {
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  transition: all 0.15s ease;
   outline: none;
-  border-color: #2563eb;
 }
 
-/* ── ДЕРЕВО СПИСКУ ───────────────────────────────────────────────────────── */
+.search-input:focus {
+  border-color: var(--border-active);
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+}
+
+.search-input::placeholder {
+  color: var(--text-muted);
+}
+
+.search-kbd {
+  position: absolute;
+  right: 36px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 6px;
+  border-radius: 4px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.btn-search-clear {
+  position: absolute;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s ease;
+}
+.btn-search-clear:hover {
+  color: var(--text-primary);
+}
+
+.search-stats {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  padding: 2px 4px;
+}
+.search-stats b {
+  color: var(--accent-cyan);
+}
+
+/* ── ДЕРЕВО СПИСКУ КАТЕГОРІЙ ─────────────────────────────────────────────── */
 .tree-node {
-  margin: 4px 0;
+  margin: 6px 0;
 }
 
 /* Рядок категорії */
@@ -64,58 +307,71 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 8px;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
   user-select: none;
   cursor: pointer;
-  transition: background 0.12s ease;
+  transition: background 0.12s ease, border-color 0.12s ease;
+  background: var(--bg-surface);
+  border: 1px solid transparent;
 }
+
 .node-row:hover {
-  background: #f1f5f9;
+  background: var(--bg-surface-hover);
+  border-color: var(--border-subtle);
 }
+
 .node-row.no-prods {
   cursor: default;
 }
-.node-row.no-prods:hover {
-  background: inherit;
-}
 
+/* Рівень 1 */
 .tree-node.lvl-1 > .node-row {
-  font-size: 15px;
+  font-size: 1.05rem;
   font-weight: 700;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 8px 12px;
 }
 .tree-node.lvl-1 > .node-row:hover {
-  background: #e2e8f0;
+  border-color: var(--border-hover);
 }
+
+/* Рівень 2 */
 .tree-node.lvl-2 > .node-row {
-  font-size: 14px;
+  font-size: 0.92rem;
   font-weight: 600;
+  background: var(--bg-surface);
 }
+
+/* Рівень 3 */
 .tree-node.lvl-3 > .node-row {
-  font-size: 13px;
+  font-size: 0.86rem;
   font-weight: 500;
+  background: var(--bg-surface);
 }
 
 /* Кнопка розгортання підкатегорій [+][-] */
 .btn-exp {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-weight: bold;
-  border: 1px solid #cbd5e1;
-  background: #ffffff;
-  border-radius: 3px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  border-radius: 4px;
   cursor: pointer;
   flex-shrink: 0;
+  transition: all 0.12s ease;
 }
 .btn-exp:hover {
-  background: #e2e8f0;
+  background: var(--bg-surface-hover);
+  border-color: var(--border-hover);
 }
 .btn-exp.empty {
   visibility: hidden;
@@ -125,30 +381,35 @@ body {
 /* Бейджі рівнів */
 .lvl-badge {
   font-size: 11px;
-  padding: 1px 5px;
-  border-radius: 3px;
+  padding: 1px 6px;
+  border-radius: 4px;
   font-weight: 600;
   flex-shrink: 0;
 }
-.lvl-badge.l1 { background: #1e293b; color: #ffffff; }
+.lvl-badge.l1 { background: #3b82f6; color: #ffffff; }
 .lvl-badge.l2 { background: #0284c7; color: #ffffff; }
-.lvl-badge.l3 { background: #64748b; color: #ffffff; }
+.lvl-badge.l3 { background: #475569; color: #ffffff; }
+
+[data-theme="dark"] .lvl-badge.l3 {
+  background: #334155;
+}
 
 .node-name {
   flex: 1;
   word-break: break-word;
+  color: var(--text-primary);
 }
 
 .node-counts {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
   font-weight: normal;
   flex-shrink: 0;
 }
 
 .site-link {
-  font-size: 12px;
-  color: #2563eb;
+  font-size: 0.8rem;
+  color: var(--text-link);
   text-decoration: none;
   flex-shrink: 0;
 }
@@ -156,31 +417,31 @@ body {
   text-decoration: underline;
 }
 
-/* Кнопка показу/приховання товарів (однакова фіксована ширина для всіх кнопок) */
+/* ── КНОПКИ ТОВАРІВ (ПРАВА ЧАСТИНА РЯДКА) ────────────────────────────────── */
 .btn-prods {
   width: 320px;
   min-width: 320px;
-  font-size: 12px;
-  padding: 3px 8px;
+  font-size: 0.78rem;
+  padding: 4px 10px;
   font-family: inherit;
   font-weight: 500;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  border-radius: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 5px;
   cursor: pointer;
-  color: #1e293b;
+  color: var(--text-primary);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
   box-sizing: border-box;
-  transition: all 0.12s ease;
+  transition: all 0.15s ease;
   user-select: none;
 }
 .btn-prods:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
+  background: var(--bg-surface-hover);
+  border-color: var(--border-hover);
 }
 .btn-prods.active {
   background: #0284c7;
@@ -188,20 +449,20 @@ body {
   border-color: #0284c7;
 }
 
-/* Візуальний акцент для "безхозних" товарів (поза підкатегоріями) */
+/* "Безхозні" товари (поза підкатегоріями) */
 .btn-prods.orphan {
-  background: #fffbeb;
-  border-color: #f59e0b;
-  color: #92400e;
+  background: var(--btn-orphan-bg);
+  border-color: var(--btn-orphan-border);
+  color: var(--btn-orphan-text);
 }
 .btn-prods.orphan:hover {
-  background: #fef3c7;
-  border-color: #d97706;
+  border-color: var(--btn-orphan-border);
+  filter: brightness(1.1);
 }
 .btn-prods.orphan.active {
-  background: #d97706;
+  background: var(--btn-orphan-active-bg);
   color: #ffffff;
-  border-color: #b45309;
+  border-color: var(--btn-orphan-active-bg);
 }
 
 /* Складові кнопки товарів */
@@ -212,15 +473,18 @@ body {
 .btn-prods-counts {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   font-size: 11px;
-  background: rgba(0, 0, 0, 0.05);
-  padding: 1px 6px;
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 2px 7px;
+  border-radius: 4px;
   white-space: nowrap;
 }
+[data-theme="light"] .btn-prods-counts {
+  background: rgba(0, 0, 0, 0.06);
+}
 .btn-prods.active .btn-prods-counts {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.25);
 }
 .count-total {
   font-weight: 700;
@@ -229,14 +493,14 @@ body {
   opacity: 0.5;
 }
 .count-no {
-  color: #dc2626;
+  color: var(--status-no);
   font-weight: 600;
 }
 .btn-prods.active .count-no {
   color: #fee2e2;
 }
 .count-no.zero {
-  color: #16a34a;
+  color: var(--status-yes);
 }
 .btn-prods.active .count-no.zero {
   color: #dcfce7;
@@ -247,39 +511,38 @@ body {
   margin-left: 2px;
 }
 
-/* Порожній стан для категорій без власних товарів (фіксує сітку 320px) */
+/* Порожній стан (фіксована ширина без товарів) */
 .btn-prods.empty {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  color: #94a3b8;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-subtle);
+  color: var(--text-muted);
   cursor: default;
 }
 .btn-prods.empty:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: var(--bg-surface);
+  border-color: var(--border-subtle);
 }
 .btn-prods.orphan.empty {
-  background: #fffdf5;
-  border: 1px dashed #fcd34d;
-  color: #b45309;
+  background: var(--btn-orphan-bg);
+  border: 1px dashed var(--btn-orphan-border);
+  color: var(--btn-orphan-text);
 }
 .btn-prods.orphan.empty:hover {
-  background: #fffdf5;
-  border-color: #fcd34d;
+  border-color: var(--btn-orphan-border);
 }
 .btn-prods.empty .btn-prods-counts {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(0, 0, 0, 0.1);
   color: inherit;
 }
 .btn-prods.empty .btn-prods-arrow {
   opacity: 0.4;
 }
 
-/* Вкладеність підкатегорій */
+/* ── ВКЛАДЕНІСТЬ ПІДКАТЕГОРІЙ ─────────────────────────────────────────────── */
 .node-children {
   padding-left: 20px;
-  border-left: 2px solid #e2e8f0;
-  margin-left: 10px;
+  border-left: 2px solid var(--border-subtle);
+  margin-left: 12px;
   margin-top: 4px;
   margin-bottom: 6px;
 }
@@ -287,86 +550,210 @@ body {
   display: none;
 }
 
-/* Блок товарів */
+/* ── БЛОК ТОВАРІВ ТА ТАБЛИЦЯ ──────────────────────────────────────────────── */
 .node-products {
-  margin: 6px 0 10px 30px;
-  border: 1px solid #e2e8f0;
-  border-radius: 4px;
+  margin: 8px 0 12px 28px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  background: var(--bg-surface);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .node-products.hidden {
   display: none;
 }
 
-/* Таблиця товарів */
 .table-prods {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 0.82rem;
+  min-width: 580px;
 }
+
 .table-prods th {
-  background: #f8fafc;
-  padding: 5px 8px;
+  background: var(--bg-subtle);
+  padding: 7px 10px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-  color: #4b5563;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   font-weight: 600;
 }
+
 .table-prods td {
-  padding: 5px 8px;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
 }
+
 .table-prods tr:last-child td {
   border-bottom: none;
 }
+
 .table-prods tr:hover {
-  background: #f8fafc;
+  background: var(--bg-surface-hover);
 }
 
 .table-prods .col-n {
-  width: 32px;
+  width: 36px;
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
+
 .table-prods .col-code {
-  width: 80px;
-  font-family: monospace;
-  color: #334155;
+  width: 90px;
+  font-family: var(--font-mono);
+  color: var(--accent-cyan);
+  font-weight: 500;
 }
+
 .table-prods .col-name a {
-  color: #0f172a;
+  color: var(--text-primary);
   text-decoration: none;
 }
+
 .table-prods .col-name a:hover {
-  color: #2563eb;
+  color: var(--text-link);
   text-decoration: underline;
 }
+
 .table-prods .col-avail {
-  width: 120px;
+  width: 130px;
   text-align: center;
 }
 
 .badge-yes {
-  color: #166534;
-  background: #dcfce7;
-  padding: 1px 6px;
-  border-radius: 3px;
+  color: var(--status-yes);
+  background: var(--status-yes-bg);
+  border: 1px solid var(--status-yes-border);
+  padding: 2px 7px;
+  border-radius: 4px;
   font-size: 11px;
+  font-weight: 500;
   display: inline-block;
-}
-.badge-no {
-  color: #991b1b;
-  background: #fee2e2;
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-size: 11px;
-  display: inline-block;
+  white-space: nowrap;
 }
 
+.badge-no {
+  color: var(--status-no);
+  background: var(--status-no-bg);
+  border: 1px solid var(--status-no-border);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Підсвічування тексту пошуку */
+mark.search-highlight {
+  background-color: var(--highlight-bg);
+  color: var(--highlight-text);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* Повідомлення порожнього пошуку */
+.empty-search-msg {
+  padding: 28px 16px;
+  text-align: center;
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-top: 12px;
+}
+
+/* ==========================================================================
+   АДАПТИВНІ МЕДІА-ЗАПИТИ (MOBILE & TABLET RESPONSIVE)
+   ========================================================================== */
+
 @media (max-width: 860px) {
+  body {
+    padding: 12px 14px 32px;
+  }
+
+  .top-bar {
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+      "left"
+      "right"
+      "search";
+    gap: 12px;
+  }
+
+  .top-bar-right {
+    justify-content: flex-start;
+  }
+
+  /* Рядки категорій стають гнучкими */
+  .node-row {
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 8px 10px;
+    gap: 6px 10px;
+  }
+
+  .node-name {
+    min-width: 200px;
+  }
+
+  /* Кнопка товарів розтягується на всю ширину під категорією на планшетах та мобільних */
   .btn-prods {
     width: 100%;
-    min-width: unset;
+    min-width: 0;
+    margin-top: 4px;
+    padding: 6px 10px;
+  }
+
+  .node-children {
+    padding-left: 14px;
+    margin-left: 8px;
+  }
+
+  .node-products {
+    margin: 6px 0 10px 14px;
+  }
+}
+
+@media (max-width: 580px) {
+  body {
+    padding: 8px 10px 24px;
+    font-size: 13px;
+  }
+
+  .title-group h1 {
+    font-size: 1.1rem;
+  }
+
+  .search-kbd {
+    display: none;
+  }
+
+  .search-input {
+    padding-right: 36px;
+  }
+
+  /* Зменшуємо відступи вкладеності для смартфонів, щоб дерево не стискалось */
+  .node-children {
+    padding-left: 8px;
+    margin-left: 4px;
+    border-left-width: 1.5px;
+  }
+
+  .node-products {
+    margin: 4px 0 8px 4px;
+  }
+
+  .btn-exp {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+  }
+
+  .table-prods {
+    font-size: 0.78rem;
   }
 }
