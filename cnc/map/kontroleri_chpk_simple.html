@@ -5,16 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Контролери для ЧПК — Мапа сайту</title>
   <link rel="stylesheet" href="style_simple.css">
+  <script>
+    (function () {
+      try {
+        var savedTheme = localStorage.getItem('theme_simple');
+        if (savedTheme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
 </head>
 <body>
 
   <div class="container">
     <div class="top-bar">
       <div class="top-bar-title">
-        <a href="index.html" class="btn-back" title="Повернутися до головного навігатора">← Навігатор</a>
         <h2>Контролери для ЧПК — Мапа сайту</h2>
       </div>
-      <input type="text" id="search-input" class="search-input" placeholder="Пошук товарів, артикулів...">
+      <div class="top-bar-actions">
+        <input type="text" id="search-input" class="search-input" placeholder="Пошук товарів, артикулів...">
+        <button id="btn-theme-toggle" class="btn-theme-toggle" title="Перемкнути тему оформлення">
+          <span class="theme-icon">🌙</span> <span class="theme-text">Темна</span>
+        </button>
+      </div>
     </div>
 
     <div id="tree" class="tree"></div>

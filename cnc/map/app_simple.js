@@ -26,6 +26,7 @@
 
     rootNode = window.CATALOG_DATA.tree;
     indexNodes(rootNode);
+    initTheme();
     resetToDefault();
     setupEvents();
   });
@@ -306,6 +307,55 @@
         render();
       });
     }
+
+    // Перемикач теми
+    const btnTheme = document.getElementById('btn-theme-toggle');
+    if (btnTheme) {
+      btnTheme.addEventListener('click', toggleTheme);
+    }
+  }
+
+  // ── ТЕМА ОФОРМЛЕННЯ (ТЕМНА ЗА ЗАМОВЧУВАННЯМ / СВІТЛА) ─────────────────────
+  function initTheme() {
+    let currentTheme = 'dark';
+    try {
+      const savedTheme = localStorage.getItem('theme_simple');
+      if (savedTheme) {
+        currentTheme = savedTheme;
+      }
+    } catch (e) {}
+    applyTheme(currentTheme);
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    try {
+      localStorage.setItem('theme_simple', theme);
+    } catch (e) {}
+    updateThemeButtonUI(theme);
+  }
+
+  function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  }
+
+  function updateThemeButtonUI(theme) {
+    const btn = document.getElementById('btn-theme-toggle');
+    if (!btn) return;
+    const icon = btn.querySelector('.theme-icon');
+    const text = btn.querySelector('.theme-text');
+    if (theme === 'dark') {
+      if (icon) icon.textContent = '☀️';
+      if (text) text.textContent = 'Світла';
+      btn.title = 'Перемкнути на світлу тему';
+    } else {
+      if (icon) icon.textContent = '🌙';
+      if (text) text.textContent = 'Темна';
+      btn.title = 'Перемкнути на темну тему';
+    }
   }
 
 })();
+

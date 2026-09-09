@@ -1,6 +1,80 @@
 /* ==========================================================================
-   site_map / style_simple.css — Максимально простий стиль списку (без тем, мінімалізм)
+   site_map / style_simple.css — Спрощений стиль списку з підтримкою тем
    ========================================================================== */
+
+:root {
+  --bg-page: #ffffff;
+  --bg-card: #ffffff;
+  --bg-hover: #f1f5f9;
+  --bg-subtle: #f8fafc;
+  --bg-tag: #f1f5f9;
+  
+  --border-color: #e2e8f0;
+  --border-dark: #cbd5e1;
+  --border-active: #2563eb;
+  
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #6b7280;
+  --text-subtle: #94a3b8;
+  --text-link: #2563eb;
+
+  --btn-bg: #ffffff;
+  --btn-border: #cbd5e1;
+  --btn-text: #1e293b;
+  --btn-hover: #f1f5f9;
+
+  --lvl1-bg: #f8fafc;
+  --lvl1-border: #cbd5e1;
+  --lvl1-hover: #e2e8f0;
+
+  --orphan-bg: #fffbeb;
+  --orphan-border: #f59e0b;
+  --orphan-text: #92400e;
+  --orphan-hover: #fef3c7;
+
+  --status-yes-bg: #dcfce7;
+  --status-yes-text: #166534;
+  --status-no-bg: #fee2e2;
+  --status-no-text: #991b1b;
+}
+
+[data-theme="dark"] {
+  --bg-page: #1f1f1f;
+  --bg-card: #252526;
+  --bg-hover: #2a2d2e;
+  --bg-subtle: #181818;
+  --bg-tag: #2d2d2d;
+  
+  --border-color: #2b2b2b;
+  --border-dark: #3c3c3c;
+  --border-active: #007acc;
+  
+  --text-primary: #cccccc;
+  --text-secondary: #d4d4d4;
+  --text-muted: #858585;
+  --text-subtle: #6e7681;
+  --text-link: #3794ff;
+
+  --btn-bg: #252526;
+  --btn-border: #3c3c3c;
+  --btn-text: #cccccc;
+  --btn-hover: #2a2d2e;
+
+  --lvl1-bg: #252526;
+  --lvl1-border: #3c3c3c;
+  --lvl1-hover: #2a2d2e;
+
+  --orphan-bg: rgba(215, 186, 125, 0.14);
+  --orphan-border: rgba(215, 186, 125, 0.4);
+  --orphan-text: #d7ba7d;
+  --orphan-hover: rgba(215, 186, 125, 0.22);
+
+  --status-yes-bg: rgba(137, 209, 133, 0.14);
+  --status-yes-text: #89d185;
+  --status-no-bg: rgba(241, 76, 76, 0.14);
+  --status-no-text: #f14c4c;
+}
 
 * {
   box-sizing: border-box;
@@ -12,9 +86,10 @@ body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;
-  color: #111827;
-  background: #ffffff;
+  color: var(--text-primary);
+  background: var(--bg-page);
   padding: 16px 20px 40px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .container {
@@ -28,7 +103,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  border-bottom: 2px solid #e5e7eb;
+  border-bottom: 2px solid var(--border-color);
   padding-bottom: 12px;
   margin-bottom: 16px;
   flex-wrap: wrap;
@@ -40,6 +115,12 @@ body {
   gap: 12px;
 }
 
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .btn-back {
   display: inline-flex;
   align-items: center;
@@ -47,23 +128,46 @@ body {
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 500;
-  color: #4b5563;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-dark);
   border-radius: 4px;
   text-decoration: none;
   transition: all 0.15s ease;
   white-space: nowrap;
 }
 .btn-back:hover {
-  background: #e5e7eb;
-  color: #111827;
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.btn-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--text-secondary);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-dark);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.btn-theme-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-active);
 }
 
 .top-bar h2 {
   font-size: 18px;
   font-weight: 700;
-  color: #111827;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -71,13 +175,19 @@ body {
   padding: 6px 12px;
   font-size: 13px;
   font-family: inherit;
-  border: 1px solid #d1d5db;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-dark);
   border-radius: 4px;
   min-width: 240px;
+  transition: border-color 0.15s ease;
 }
 .search-input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--border-active);
+}
+.search-input::placeholder {
+  color: var(--text-subtle);
 }
 
 /* ── ДЕРЕВО СПИСКУ ───────────────────────────────────────────────────────── */
@@ -97,7 +207,7 @@ body {
   transition: background 0.12s ease;
 }
 .node-row:hover {
-  background: #f1f5f9;
+  background: var(--bg-hover);
 }
 .node-row.no-prods {
   cursor: default;
@@ -109,11 +219,11 @@ body {
 .tree-node.lvl-1 > .node-row {
   font-size: 15px;
   font-weight: 700;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
+  background: var(--lvl1-bg);
+  border: 1px solid var(--lvl1-border);
 }
 .tree-node.lvl-1 > .node-row:hover {
-  background: #e2e8f0;
+  background: var(--lvl1-hover);
 }
 .tree-node.lvl-2 > .node-row {
   font-size: 14px;
@@ -134,14 +244,15 @@ body {
   font-size: 13px;
   font-family: monospace;
   font-weight: bold;
-  border: 1px solid #cbd5e1;
-  background: #ffffff;
+  border: 1px solid var(--border-dark);
+  background: var(--btn-bg);
+  color: var(--text-primary);
   border-radius: 3px;
   cursor: pointer;
   flex-shrink: 0;
 }
 .btn-exp:hover {
-  background: #e2e8f0;
+  background: var(--bg-hover);
 }
 .btn-exp.empty {
   visibility: hidden;
@@ -155,10 +266,15 @@ body {
   border-radius: 3px;
   font-weight: 600;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 .lvl-badge.l1 { background: #1e293b; color: #ffffff; }
 .lvl-badge.l2 { background: #0284c7; color: #ffffff; }
 .lvl-badge.l3 { background: #64748b; color: #ffffff; }
+
+[data-theme="dark"] .lvl-badge.l1 { background: #333333; color: #ffffff; }
+[data-theme="dark"] .lvl-badge.l2 { background: #0e639c; color: #ffffff; }
+[data-theme="dark"] .lvl-badge.l3 { background: #383838; color: #cccccc; }
 
 .node-name {
   flex: 1;
@@ -167,7 +283,7 @@ body {
 
 .node-counts {
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-muted);
   font-weight: normal;
   flex-shrink: 0;
   white-space: nowrap;
@@ -175,7 +291,7 @@ body {
 
 .site-link {
   font-size: 12px;
-  color: #2563eb;
+  color: var(--text-link);
   text-decoration: none;
   flex-shrink: 0;
   white-space: nowrap;
@@ -184,7 +300,7 @@ body {
   text-decoration: underline;
 }
 
-/* Кнопка показу/приховання товарів (однакова фіксована ширина для всіх кнопок) */
+/* Кнопка показу/приховання товарів (однакова фіксована ширина для всіх кнопок на десктопі) */
 .btn-prods {
   width: 320px;
   min-width: 320px;
@@ -192,11 +308,11 @@ body {
   padding: 3px 8px;
   font-family: inherit;
   font-weight: 500;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
+  background: var(--btn-bg);
+  border: 1px solid var(--border-dark);
   border-radius: 4px;
   cursor: pointer;
-  color: #1e293b;
+  color: var(--btn-text);
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -207,8 +323,8 @@ body {
   user-select: none;
 }
 .btn-prods:hover {
-  background: #f1f5f9;
-  border-color: #94a3b8;
+  background: var(--btn-hover);
+  border-color: var(--border-active);
 }
 .btn-prods.active {
   background: #0284c7;
@@ -218,13 +334,12 @@ body {
 
 /* Візуальний акцент для "безхозних" товарів (поза підкатегоріями) */
 .btn-prods.orphan {
-  background: #fffbeb;
-  border-color: #f59e0b;
-  color: #92400e;
+  background: var(--orphan-bg);
+  border-color: var(--orphan-border);
+  color: var(--orphan-text);
 }
 .btn-prods.orphan:hover {
-  background: #fef3c7;
-  border-color: #d97706;
+  background: var(--orphan-hover);
 }
 .btn-prods.orphan.active {
   background: #d97706;
@@ -242,7 +357,7 @@ body {
   align-items: center;
   gap: 3px;
   font-size: 11px;
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(128, 128, 128, 0.14);
   padding: 1px 6px;
   border-radius: 3px;
   white-space: nowrap;
@@ -277,26 +392,26 @@ body {
 
 /* Порожній стан для категорій без власних товарів (фіксує сітку 320px) */
 .btn-prods.empty {
-  background: #f8fafc;
-  border: 1px dashed #cbd5e1;
-  color: #94a3b8;
+  background: var(--bg-subtle);
+  border: 1px dashed var(--border-color);
+  color: var(--text-subtle);
   cursor: default;
 }
 .btn-prods.empty:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: var(--bg-subtle);
+  border-color: var(--border-color);
 }
 .btn-prods.orphan.empty {
-  background: #fffdf5;
-  border: 1px dashed #fcd34d;
-  color: #b45309;
+  background: var(--orphan-bg);
+  border: 1px dashed var(--orphan-border);
+  color: var(--orphan-text);
 }
 .btn-prods.orphan.empty:hover {
-  background: #fffdf5;
-  border-color: #fcd34d;
+  background: var(--orphan-hover);
+  border-color: var(--orphan-border);
 }
 .btn-prods.empty .btn-prods-counts {
-  background: rgba(0, 0, 0, 0.04);
+  background: rgba(128, 128, 128, 0.08);
   color: inherit;
 }
 .btn-prods.empty .btn-prods-arrow {
@@ -306,7 +421,7 @@ body {
 /* Вкладеність підкатегорій */
 .node-children {
   padding-left: 20px;
-  border-left: 2px solid #e2e8f0;
+  border-left: 2px solid var(--border-color);
   margin-left: 10px;
   margin-top: 4px;
   margin-bottom: 6px;
@@ -318,7 +433,8 @@ body {
 /* Блок товарів */
 .node-products {
   margin: 6px 0 10px 30px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
   border-radius: 4px;
   overflow-x: auto;
 }
@@ -333,41 +449,41 @@ body {
   font-size: 12px;
 }
 .table-prods th {
-  background: #f8fafc;
+  background: var(--bg-subtle);
   padding: 5px 8px;
   text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-  color: #4b5563;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-secondary);
   font-weight: 600;
 }
 .table-prods td {
   padding: 5px 8px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--border-color);
   vertical-align: middle;
 }
 .table-prods tr:last-child td {
   border-bottom: none;
 }
 .table-prods tr:hover {
-  background: #f8fafc;
+  background: var(--bg-hover);
 }
 
 .table-prods .col-n {
   width: 32px;
   text-align: center;
-  color: #94a3b8;
+  color: var(--text-subtle);
 }
 .table-prods .col-code {
   width: 80px;
   font-family: monospace;
-  color: #334155;
+  color: var(--text-secondary);
 }
 .table-prods .col-name a {
-  color: #0f172a;
+  color: var(--text-primary);
   text-decoration: none;
 }
 .table-prods .col-name a:hover {
-  color: #2563eb;
+  color: var(--text-link);
   text-decoration: underline;
 }
 .table-prods .col-avail {
@@ -376,16 +492,16 @@ body {
 }
 
 .badge-yes {
-  color: #166534;
-  background: #dcfce7;
+  color: var(--status-yes-text);
+  background: var(--status-yes-bg);
   padding: 1px 6px;
   border-radius: 3px;
   font-size: 11px;
   display: inline-block;
 }
 .badge-no {
-  color: #991b1b;
-  background: #fee2e2;
+  color: var(--status-no-text);
+  background: var(--status-no-bg);
   padding: 1px 6px;
   border-radius: 3px;
   font-size: 11px;
@@ -409,15 +525,28 @@ body {
     width: 100%;
   }
 
+  .top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
   .top-bar h2 {
     font-size: 16px;
   }
 
   .search-input {
-    width: 100%;
+    flex: 1;
+    width: auto;
     min-width: 0;
     padding: 8px 12px;
     font-size: 14px;
+  }
+
+  .btn-theme-toggle {
+    padding: 7px 12px;
+    font-size: 13px;
   }
 
   /* Дозволяємо рядку категорії переносити елементи */
